@@ -5,32 +5,36 @@ using TMPro;
 public class DialogDisplay : MonoBehaviour
 {
     public TMP_Text dialogText;
-    public Dialog playerDialog;
+    public Dialog dialog;
     public int dialogEntry = 0;
 
     private void Start()
     {
-        dialogText.text = playerDialog.dialogs[0];
+        dialogText.text = "";
     }
-    public void NextDialogLine()
+    public bool NextDialogLine()
     {
+        dialogText.text = dialog.dialogs[dialogEntry];
         dialogEntry++;
-        if (dialogEntry >= playerDialog.dialogs.Count)
+           
+        if(dialogEntry >= dialog.dialogs.Count)
         {
             Debug.Log("That's all dialogs");
-            dialogEntry = playerDialog.dialogs.Count - 1;
+            dialogEntry = dialog.dialogs.Count - 1;
+            return true;
         }
-        dialogText.text = playerDialog.dialogs[dialogEntry];
+        return false;
     }
     public void LastDialogLine()
     {
+        dialogText.text = dialog.dialogs[dialogEntry];
         dialogEntry--;
         if (dialogEntry <= 0)
         {
             Debug.Log("That's initial line");
             dialogEntry = 0;
         }
-        dialogText.text = playerDialog.dialogs[dialogEntry]; 
+        
     }
     
 }

@@ -10,10 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a2993859818fd01499cd6b79a33d8c1c, type: 3}
-  m_Name: PlayerDialog
+  m_Name: Dialog1
   m_EditorClassIdentifier: 
+  names:
+  - Player
+  - Plain Knight
+  rawDialogs:
+  - Who are you?
+  - I'm just a plain knight, I'm here to make sure you never step our ot here.
+  - Puff... Just you?
+  - What, you want a piece of cake?
+  - Impress me.
+  - You asked for that!
   dialogs:
-  - What happened? Where am I?
-  - Oh... right...
-  - That bully Mario defeated me and took Princess Peach
-  - I must save Princess Peach!
+  - 'Player: 1'
+  - 'Plain Knight: 2'
+  - 'Player: 3'
+  - 'Plain Knight: 4'
+  - 'Player: 6'

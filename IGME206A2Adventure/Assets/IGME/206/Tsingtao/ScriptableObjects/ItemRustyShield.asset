@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 601bc93981592be418920fdfa6c873e4, type: 3}
-  m_Name: PlayerInventory
+  m_Script: {fileID: 11500000, guid: 147bc443930a8294588f95451d616210, type: 3}
+  m_Name: ItemRustyShield
   m_EditorClassIdentifier: 
-  prefabName: 
-  numberOfPrefabsToCreate: 0
-  spawnPoints: []
+  itemName: Rusty Shield
+  hpValue: 0
+  attackValue: 0
+  defenseValue: 1

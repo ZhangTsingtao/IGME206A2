@@ -7,35 +7,64 @@ using TMPro;
 
 public class UIController : MonoBehaviour
 {
-    public Button restartButton, nextLevelButton, nextButton, previousButton;
-    public DialogDisplay DialogDisplay;
+    [Header("Assign")]
+    public Button restartButton, nextLevelButton, nextButton, attackButton, inventoryButton, closeInventoryButton, lootButton;
+    [Header("Assign")]
+    public NPC enemy;
+    [Header("Assign")]
+    public TMP_Text stageText, infoText, playerStatusHeaderText, playerStatusText;
+    [Header("Assign")]
+    public GameObject drop;
+    [Header("Assign")]
+    public GameObject gameOverUI;
 
-    public TMP_Text StageText;
+    [Header("No Assign")]
+    [SerializeField] private Item lootItem;
+    private DialogDisplay dialogDisplay;
+    private string infoTextBuffer;
     public enum LevelStage
     {
         TrashTalk,
-        Fight,
-        Inventory,
+        Combat,
         Loot,
         Explore
     }
     public LevelStage levelStage;
     void Start()
     {
-        DialogDisplay = transform.GetComponent<DialogDisplay>();
-        restartButton.onClick.AddListener(RestartScene);
+        Debug.Log(PlayerStatus.LevelID);
+        PlayerStatus.NextLevel();
+        dialogDisplay = transform.GetComponent<DialogDisplay>();
+        restartButton.onClick.AddListener(RestartLevel);
         nextLevelButton.onClick.AddListener(NextLevel);
         nextButton.onClick.AddListener(NextEvent);
-        previousButton.onClick.AddListener(LastDialog);
+
+        //Combat
+        attackButton.onClick.AddListener(Attack);
+        inventoryButton.onClick.AddListener(Inventory);
+        closeInventoryButton.onClick.AddListener(CloseInventory);
 
         nextLevelButton.gameObject.SetActive(false);
+        attackButton.gameObject.SetActive(false);
+        inventoryButton.gameObject.SetActive(false);
+        closeInventoryButton.gameObject.SetActive(false);
+        lootButton.gameObject.SetActive(false);
+        playerStatusHeaderText.gameObject.SetActive(false);
+        playerStatusText.gameObject.SetActive(false);
+        drop.SetActive(false);
+        gameOverUI.SetActive(false);
+
+        stageText.text = "";
+        infoText.text = "";
+
+        NextEvent();
     }
     private void NextLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
-    private void RestartScene()
+    private void RestartLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
@@ -44,52 +73,120 @@ public class UIController : MonoBehaviour
         switch (levelStage)
         {
             case LevelStage.TrashTalk:
-                NextDialog(); break;
-            case LevelStage.Fight:
-                Fight(); break;
-            case LevelStage.Inventory:
-                Inventory(); break;
+                TrashTalk(); break;
+            case LevelStage.Combat:
+                Combat(); break;
             case LevelStage.Loot:
                 Loot(); break;
             case LevelStage.Explore:
                 Explore(); break;
+
+            default: 
+                Debug.Log("!!!BUG!!!"); break;
         } 
     }
 
-    private void NextDialog()
+    private void TrashTalk()
     {
-        StageText.text = "Trash Talk";
-        bool trashTalkEnd = DialogDisplay.NextDialogLine();
+        stageText.text = "Trash Talk";
+
+        bool trashTalkEnd;
+        (trashTalkEnd, infoText.text) = dialogDisplay.NextDialogLine();
+
         if (trashTalkEnd)
         {
-            levelStage = LevelStage.Fight;
+            levelStage = LevelStage.Combat;
         }
     }
-    private void Fight()
+    private void Combat()
     {
-        StageText.text = "Fight";
-        Debug.Log("Fight");
-        levelStage = LevelStage.Inventory;
+        if(enemy == null)
+        {
+            Debug.LogWarning("No enemy attached to UIController");
+            levelStage = LevelStage.Explore;
+            NextEvent();
+        }
+        //Texts
+        stageText.text = "Combat";
+        infoText.text = "";
+        playerStatusHeaderText.gameObject.SetActive(true);
+        playerStatusText.gameObject.SetActive(true);
+        drop.SetActive(true);
+
+        playerStatusText.text = PlayerStatus.DisplayStatus();
+
+        //Buttons
+        nextButton.gameObject.SetActive(false);
+        attackButton.gameObject.SetActive(true);
+        inventoryButton.gameObject.SetActive(true);
     }
-    private void Inventory() 
-    {
-        StageText.text = "Inventory";
-        Debug.Log("Inventory");
-        levelStage = LevelStage.Explore;
-    }
+
+    
+
     private void Loot()
     {
-        StageText.text = "Loot";
+        stageText.text = "Loot";
         Debug.Log("Loot");
+
+        if(enemy.TryGetComponent<Item>(out Item item))
+        {
+            PlayerStatus.GetItem(item);
+        }
         levelStage = LevelStage.Explore;
     }
     private void Explore()
     {
-        StageText.text = "Explore";
+        stageText.text = "Explore";
         Debug.Log("Explore");
     }
-    private void LastDialog()
+
+    //Below are detailed methods in each stage
+    private void Attack()
     {
-        DialogDisplay.LastDialogLine();
+        infoText.text = "";
+        if (enemy == null) return;
+        infoText.text += enemy.TakeDamage(PlayerStatus.PlayerAttackValue);
+        infoText.text += "\n";
+
+        if (!enemy.Alive)
+        {
+            attackButton.gameObject.SetActive(false);
+            nextButton.gameObject.SetActive(true);
+            levelStage = LevelStage.Loot;
+            lootItem = enemy.item;
+            enemy.Die();
+            return;
+        }
+
+        bool playerAlive;
+        string playerFightInfo;
+        (playerAlive, playerFightInfo) = PlayerStatus.TakeDamage(enemy.attackValue);
+        infoText.text += "\n" + playerFightInfo;
+        playerStatusText.text = PlayerStatus.DisplayStatus();
+
+        if (!playerAlive)
+        {
+            Debug.Log("Player died");
+            gameOverUI.SetActive(true);
+        }
+    }
+
+    private void Inventory()
+    {
+        stageText.text = "Inventory";
+        infoTextBuffer = infoText.text;
+        infoText.text = "";
+        inventoryButton.gameObject.SetActive(false);
+        attackButton.gameObject.SetActive(false);
+        closeInventoryButton.gameObject.SetActive(true);
+    }
+    private void CloseInventory()
+    {
+        stageText.text = "Combat";
+        infoText.text = infoTextBuffer;
+        infoTextBuffer = "";
+        inventoryButton.gameObject.SetActive(true);
+        attackButton.gameObject.SetActive(true);
+        closeInventoryButton.gameObject.SetActive(false);
     }
 }

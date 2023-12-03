@@ -87,29 +87,28 @@ public static class PlayerStatus
         if (!PlayerItems.Contains(item)) return;
         if (EquipedItems[item.itemType] != item) return;
 
-        PlayerAttackValue -= item.attackValue;
-        PlayerDefenseValue -= item.defenseValue;
-        PlayerHealValue -= item.healValue;
+        //PlayerAttackValue -= item.attackValue;
+        //PlayerDefenseValue -= item.defenseValue;
+        //PlayerHealValue -= item.healValue;
         EquipedItems[item.itemType] = null;
         CountItemBonus();
     }
     public static void CountItemBonus()
     {
-        Debug.Log("CountItemBonus Start");
+        PlayerAttackValue = startAttackValue;
+        PlayerDefenseValue = startDefenseValue;
+        PlayerHealValue = startHealValue;
+        PlayerMaxHealth = startMaxHealth;
+
         foreach (Item.ItemType type in Enum.GetValues(typeof(Item.ItemType)))
         {
             if (EquipedItems[type] == null) continue;
 
-            Debug.Log("An item counted, its type is" + type);
-            PlayerAttackValue = startAttackValue + EquipedItems[type].attackValue;
-            PlayerDefenseValue = startDefenseValue + EquipedItems[type].defenseValue;
-            PlayerHealValue = startHealValue + EquipedItems[type].healValue;
+            PlayerAttackValue += EquipedItems[type].attackValue;
+            PlayerDefenseValue += EquipedItems[type].defenseValue;
+            PlayerHealValue += EquipedItems[type].healValue;
 
-            PlayerMaxHealth = startMaxHealth + EquipedItems[type].healValue;
-            Debug.Log("HP: " + PlayerHealth + " / " + PlayerMaxHealth + "\n" +
-               "Attack: " + PlayerAttackValue + "\n" +
-               "Defense: " + PlayerDefenseValue + "\n" +
-               "Heal: " + PlayerHealValue);
+            PlayerMaxHealth += EquipedItems[type].healValue;
         }
     }
 
@@ -120,12 +119,6 @@ public static class PlayerStatus
 
     public static string DisplayStatus()
     {
-        CountItemBonus();
-
-        Debug.Log("HP: " + PlayerHealth + " / " + PlayerMaxHealth + "\n" +
-               "Attack: " + PlayerAttackValue + "\n" +
-               "Defense: " + PlayerDefenseValue + "\n" +
-               "Heal: " + PlayerHealValue);
         return "HP: " + PlayerHealth + " / " + PlayerMaxHealth + "\n" +
                "Attack: " + PlayerAttackValue + "\n" +
                "Defense: " + PlayerDefenseValue + "\n" +

@@ -8,12 +8,18 @@ using UnityEngine.UI;
 
 public static class PlayerStatus
 {
+
+    private const int startAttackValue = 2;
+    private const int startDefenseValue = 1;
+    private const int startHealValue = 1;
+    private const int startMaxHealth = 10;
+
     public static int LevelID = 0;
-    public static int PlayerHealth = 10;
-    public static int PlayerMaxHealth = 10;
-    public static int PlayerHealValue = 1;
-    public static int PlayerAttackValue = 2;
-    public static int PlayerDefenseValue = 1;
+    public static int PlayerHealth = startMaxHealth;
+    public static int PlayerMaxHealth = startMaxHealth;
+    public static int PlayerHealValue = startHealValue;
+    public static int PlayerAttackValue = startAttackValue;
+    public static int PlayerDefenseValue = startDefenseValue;
 
     public static List<Item> PlayerItems = new List<Item>();
     public static Dictionary<Item.ItemType, Item> EquipedItems = new Dictionary<Item.ItemType, Item> 
@@ -73,7 +79,7 @@ public static class PlayerStatus
         Debug.Log("Equip " + item.itemName);
         if (!PlayerItems.Contains(item)) return;
         EquipedItems[item.itemType] = item;
-        GetItemBonus();
+        CountItemBonus();
     }
     public static void UnequipItem(Item item)
     {
@@ -83,21 +89,27 @@ public static class PlayerStatus
 
         PlayerAttackValue -= item.attackValue;
         PlayerDefenseValue -= item.defenseValue;
+        PlayerHealValue -= item.healValue;
         EquipedItems[item.itemType] = null;
-        GetItemBonus();
+        CountItemBonus();
     }
-    public static void GetItemBonus()
+    public static void CountItemBonus()
     {
+        Debug.Log("CountItemBonus Start");
         foreach (Item.ItemType type in Enum.GetValues(typeof(Item.ItemType)))
         {
             if (EquipedItems[type] == null) continue;
 
-            PlayerAttackValue += EquipedItems[type].attackValue;
-            PlayerDefenseValue += EquipedItems[type].defenseValue;
-            PlayerHealValue += EquipedItems[type].healValue;
+            Debug.Log("An item counted, its type is" + type);
+            PlayerAttackValue = startAttackValue + EquipedItems[type].attackValue;
+            PlayerDefenseValue = startDefenseValue + EquipedItems[type].defenseValue;
+            PlayerHealValue = startHealValue + EquipedItems[type].healValue;
 
-            PlayerHealth += EquipedItems[type].healValue;
-            PlayerMaxHealth += EquipedItems[type].healValue;
+            PlayerMaxHealth = startMaxHealth + EquipedItems[type].healValue;
+            Debug.Log("HP: " + PlayerHealth + " / " + PlayerMaxHealth + "\n" +
+               "Attack: " + PlayerAttackValue + "\n" +
+               "Defense: " + PlayerDefenseValue + "\n" +
+               "Heal: " + PlayerHealValue);
         }
     }
 
@@ -108,6 +120,12 @@ public static class PlayerStatus
 
     public static string DisplayStatus()
     {
+        CountItemBonus();
+
+        Debug.Log("HP: " + PlayerHealth + " / " + PlayerMaxHealth + "\n" +
+               "Attack: " + PlayerAttackValue + "\n" +
+               "Defense: " + PlayerDefenseValue + "\n" +
+               "Heal: " + PlayerHealValue);
         return "HP: " + PlayerHealth + " / " + PlayerMaxHealth + "\n" +
                "Attack: " + PlayerAttackValue + "\n" +
                "Defense: " + PlayerDefenseValue + "\n" +
@@ -133,10 +151,10 @@ public static class PlayerStatus
     {
         PlayerItems.Clear();
         LevelID = 0;
-        PlayerHealth = 10;
-        PlayerMaxHealth = 10;
-        PlayerHealValue = 1;
-        PlayerAttackValue = 2;
-        PlayerDefenseValue = 1;
+        PlayerHealth = startMaxHealth;
+        PlayerMaxHealth = startMaxHealth;
+        PlayerHealValue = startHealValue;
+        PlayerAttackValue = startAttackValue;
+        PlayerDefenseValue = startDefenseValue;
     }
 }

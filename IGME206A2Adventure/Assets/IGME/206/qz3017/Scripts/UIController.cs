@@ -29,6 +29,7 @@ public class UIController : MonoBehaviour
     [SerializeField] List<GameObject> itemButtons = new List<GameObject>();
 
     public int initialItemAmount = 0;
+
     public enum LevelStage
     {
         TrashTalk,
@@ -40,13 +41,6 @@ public class UIController : MonoBehaviour
 
     void Start()
     {
-        //Debug
-        //for (int i = 0; i < initialItemAmount; i++)
-        //{
-        //    PlayerStatus.PlayerItems.Add(new Item());
-        //}
-        //Done
-
         Debug.Log(PlayerStatus.LevelID);
         PlayerStatus.NextLevel();
         dialogDisplay = transform.GetComponent<DialogDisplay>();

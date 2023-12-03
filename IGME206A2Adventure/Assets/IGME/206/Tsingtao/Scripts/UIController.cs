@@ -8,7 +8,7 @@ using TMPro;
 public class UIController : MonoBehaviour
 {
     [Header("Assign")]
-    public Button restartButton, nextLevelButton, nextButton, attackButton, inventoryButton, closeInventoryButton, lootButton;
+    public Button nextLevelButton, nextButton, attackButton, inventoryButton, closeInventoryButton, lootButton, equipButton, unequipButton;
     [Header("Assign")]
     public NPC enemy;
     [Header("Assign")]
@@ -22,6 +22,9 @@ public class UIController : MonoBehaviour
     [SerializeField] private Item lootItem;
     private DialogDisplay dialogDisplay;
     private string infoTextBuffer;
+    [SerializeField] List<GameObject> itemButtons = new List<GameObject>();
+
+    public int initialItemAmount = 0;
     public enum LevelStage
     {
         TrashTalk,
@@ -32,16 +35,22 @@ public class UIController : MonoBehaviour
     public LevelStage levelStage;
     void Start()
     {
+        //Debug
+        //for (int i = 0; i < initialItemAmount; i++)
+        //{
+        //    PlayerStatus.PlayerItems.Add(new Item());
+        //}
+        //Done
+
         Debug.Log(PlayerStatus.LevelID);
         PlayerStatus.NextLevel();
         dialogDisplay = transform.GetComponent<DialogDisplay>();
-        restartButton.onClick.AddListener(RestartLevel);
         nextLevelButton.onClick.AddListener(NextLevel);
         nextButton.onClick.AddListener(NextEvent);
 
         //Combat
         attackButton.onClick.AddListener(Attack);
-        inventoryButton.onClick.AddListener(Inventory);
+        inventoryButton.onClick.AddListener(OpenInventory);
         closeInventoryButton.onClick.AddListener(CloseInventory);
 
         nextLevelButton.gameObject.SetActive(false);
@@ -49,6 +58,9 @@ public class UIController : MonoBehaviour
         inventoryButton.gameObject.SetActive(false);
         closeInventoryButton.gameObject.SetActive(false);
         lootButton.gameObject.SetActive(false);
+        equipButton.gameObject.SetActive(false);
+        unequipButton.gameObject.SetActive(false);
+
         playerStatusHeaderText.gameObject.SetActive(false);
         playerStatusText.gameObject.SetActive(false);
         drop.SetActive(false);
@@ -64,10 +76,6 @@ public class UIController : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
-    private void RestartLevel()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
     private void NextEvent()
     {
         switch (levelStage)
@@ -85,7 +93,11 @@ public class UIController : MonoBehaviour
                 Debug.Log("!!!BUG!!!"); break;
         } 
     }
-
+    private void ShiftToNextStage()
+    {
+        levelStage++;
+        nextButton.GetComponentInChildren<TMP_Text>().text = levelStage.ToString();
+    }
     private void TrashTalk()
     {
         stageText.text = "Trash Talk";
@@ -95,7 +107,7 @@ public class UIController : MonoBehaviour
 
         if (trashTalkEnd)
         {
-            levelStage = LevelStage.Combat;
+            ShiftToNextStage();
         }
     }
     private void Combat()
@@ -128,11 +140,16 @@ public class UIController : MonoBehaviour
         stageText.text = "Loot";
         Debug.Log("Loot");
 
-        if(enemy.TryGetComponent<Item>(out Item item))
+        if(lootItem == null)
         {
-            PlayerStatus.GetItem(item);
+            infoText.text = "Nothing valuable found from this enemy";
         }
-        levelStage = LevelStage.Explore;
+        else
+        {
+            infoText.text = PlayerStatus.GetItem(lootItem);
+        }
+
+        ShiftToNextStage();
     }
     private void Explore()
     {
@@ -143,8 +160,11 @@ public class UIController : MonoBehaviour
     //Below are detailed methods in each stage
     private void Attack()
     {
+        string textBuffer = infoText.text;
         infoText.text = "";
+
         if (enemy == null) return;
+
         infoText.text += enemy.TakeDamage(PlayerStatus.PlayerAttackValue);
         infoText.text += "\n";
 
@@ -152,9 +172,10 @@ public class UIController : MonoBehaviour
         {
             attackButton.gameObject.SetActive(false);
             nextButton.gameObject.SetActive(true);
-            levelStage = LevelStage.Loot;
             lootItem = enemy.item;
             enemy.Die();
+
+            ShiftToNextStage();
             return;
         }
 
@@ -171,22 +192,74 @@ public class UIController : MonoBehaviour
         }
     }
 
-    private void Inventory()
+    private void OpenInventory()
     {
         stageText.text = "Inventory";
         infoTextBuffer = infoText.text;
-        infoText.text = "";
-        inventoryButton.gameObject.SetActive(false);
-        attackButton.gameObject.SetActive(false);
-        closeInventoryButton.gameObject.SetActive(true);
+
+        int itemAmount;
+        (infoText.text, itemAmount) = PlayerStatus.DisplayInventory(infoText.transform.position);
+
+        DisplayInventoryUI(true);
+
+        attackButton.gameObject.SetActive(false);        
     }
+
     private void CloseInventory()
     {
-        stageText.text = "Combat";
+        stageText.text = levelStage.ToString();
         infoText.text = infoTextBuffer;
         infoTextBuffer = "";
         inventoryButton.gameObject.SetActive(true);
         attackButton.gameObject.SetActive(true);
-        closeInventoryButton.gameObject.SetActive(false);
+
+        DisplayInventoryUI(false);
+        
+        if (enemy == null || enemy.Alive == false)
+        {
+            attackButton.gameObject.SetActive(false);
+        }
+    }
+
+    private void DisplayInventoryUI(bool display)
+    {
+        closeInventoryButton.gameObject.SetActive(display);
+        inventoryButton.gameObject.SetActive(!display);
+
+        if (display)
+        {
+            for (int i = 0; i < PlayerStatus.PlayerItems.Count; i++)
+            {
+                Item item = PlayerStatus.PlayerItems[i];
+
+                GameObject equipButtonGO = Instantiate(equipButton.gameObject);
+                GameObject unequipButtonGO = Instantiate(unequipButton.gameObject);
+                equipButtonGO.transform.SetParent(transform);
+                unequipButtonGO.transform.SetParent(transform);
+                equipButtonGO.SetActive(true);
+                unequipButtonGO.SetActive(true);
+
+                //Code
+                itemButtons.Add(equipButtonGO);
+                itemButtons.Add(unequipButtonGO);
+                equipButtonGO.GetComponent<Button>().onClick.AddListener(item.EquipItem);
+                unequipButtonGO.GetComponent<Button>().onClick.AddListener(item.UnequipItem);
+                
+
+                //Position
+                Vector3 buttonStartPosition = infoText.transform.position + new Vector3(-20, -80 - 124 * i, 0);
+
+                equipButtonGO.transform.position = buttonStartPosition;
+                unequipButton.transform.position = buttonStartPosition + new Vector3(200, 0, 0);
+            }
+        }
+        else
+        {
+            foreach (GameObject buttonGO in itemButtons)
+            {
+                Destroy(buttonGO);
+            }
+            itemButtons.Clear();
+        }
     }
 }

@@ -15,6 +15,7 @@ public class RestartGame : MonoBehaviour
     }
     public void RestartTheGame() 
     {
+        Debug.Log(PlayerStatus.LevelID);
         SceneManager.LoadScene(0);
         PlayerStatus.ResetStatus();
     }

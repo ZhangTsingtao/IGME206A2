@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: ItemRustyShield
   m_EditorClassIdentifier: 
   itemName: Rusty Shield
-  hpValue: 0
   attackValue: 0
   defenseValue: 1

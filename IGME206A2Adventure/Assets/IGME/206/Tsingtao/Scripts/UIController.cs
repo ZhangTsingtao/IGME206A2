@@ -8,13 +8,17 @@ using TMPro;
 public class UIController : MonoBehaviour
 {
     [Header("Assign")]
-    public Button nextLevelButton, nextButton, attackButton, inventoryButton, closeInventoryButton, lootButton, equipButton, unequipButton;
+    public Button nextButton, attackButton, inventoryButton, closeInventoryButton, equipButton, unequipButton;
     [Header("Assign")]
     public NPC enemy;
     [Header("Assign")]
     public TMP_Text stageText, infoText, playerStatusHeaderText, playerStatusText;
     [Header("Assign")]
     public GameObject drop;
+    [Header("Assign")]
+    public TMP_Text equippedHeaderText;
+    public TMP_Text equippedText;
+    public GameObject equippedDrop;
     [Header("Assign")]
     public GameObject gameOverUI;
 
@@ -33,6 +37,7 @@ public class UIController : MonoBehaviour
         Explore
     }
     public LevelStage levelStage;
+
     void Start()
     {
         //Debug
@@ -45,7 +50,6 @@ public class UIController : MonoBehaviour
         Debug.Log(PlayerStatus.LevelID);
         PlayerStatus.NextLevel();
         dialogDisplay = transform.GetComponent<DialogDisplay>();
-        nextLevelButton.onClick.AddListener(NextLevel);
         nextButton.onClick.AddListener(NextEvent);
 
         //Combat
@@ -53,27 +57,28 @@ public class UIController : MonoBehaviour
         inventoryButton.onClick.AddListener(OpenInventory);
         closeInventoryButton.onClick.AddListener(CloseInventory);
 
-        nextLevelButton.gameObject.SetActive(false);
         attackButton.gameObject.SetActive(false);
         inventoryButton.gameObject.SetActive(false);
         closeInventoryButton.gameObject.SetActive(false);
-        lootButton.gameObject.SetActive(false);
         equipButton.gameObject.SetActive(false);
         unequipButton.gameObject.SetActive(false);
+
+        //equipped stuff
+        equippedHeaderText.gameObject.SetActive(false);
+        equippedText.gameObject.SetActive(false);
+        equippedDrop.SetActive(false);
 
         playerStatusHeaderText.gameObject.SetActive(false);
         playerStatusText.gameObject.SetActive(false);
         drop.SetActive(false);
         gameOverUI.SetActive(false);
 
+
+
         stageText.text = "";
         infoText.text = "";
 
         NextEvent();
-    }
-    private void NextLevel()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     private void NextEvent()
@@ -147,6 +152,7 @@ public class UIController : MonoBehaviour
         else
         {
             infoText.text = PlayerStatus.GetItem(lootItem);
+            lootItem = null;
         }
 
         ShiftToNextStage();
@@ -155,6 +161,7 @@ public class UIController : MonoBehaviour
     {
         stageText.text = "Explore";
         Debug.Log("Explore");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     //Below are detailed methods in each stage
@@ -226,8 +233,15 @@ public class UIController : MonoBehaviour
         closeInventoryButton.gameObject.SetActive(display);
         inventoryButton.gameObject.SetActive(!display);
 
+        //Equipped stuff
+        equippedHeaderText.gameObject.SetActive(display);
+        equippedText.gameObject.SetActive(display);
+        equippedDrop.SetActive(display);
         if (display)
         {
+            //List Equipped items
+            equippedText.text = PlayerStatus.ShowEquippedItem();
+            //Every items in the inventory
             for (int i = 0; i < PlayerStatus.PlayerItems.Count; i++)
             {
                 Item item = PlayerStatus.PlayerItems[i];
@@ -242,15 +256,15 @@ public class UIController : MonoBehaviour
                 //Code
                 itemButtons.Add(equipButtonGO);
                 itemButtons.Add(unequipButtonGO);
-                equipButtonGO.GetComponent<Button>().onClick.AddListener(item.EquipItem);
-                unequipButtonGO.GetComponent<Button>().onClick.AddListener(item.UnequipItem);
+                equipButtonGO.GetComponent<Button>().onClick.AddListener(() => EquipItem(item));
+                unequipButtonGO.GetComponent<Button>().onClick.AddListener(() => UnequipItem(item));
                 
 
                 //Position
                 Vector3 buttonStartPosition = infoText.transform.position + new Vector3(-20, -80 - 124 * i, 0);
 
                 equipButtonGO.transform.position = buttonStartPosition;
-                unequipButton.transform.position = buttonStartPosition + new Vector3(200, 0, 0);
+                unequipButtonGO.transform.position = buttonStartPosition + new Vector3(200, 0, 0);
             }
         }
         else
@@ -261,5 +275,19 @@ public class UIController : MonoBehaviour
             }
             itemButtons.Clear();
         }
+    }
+    private void EquipItem(Item item)
+    {
+        PlayerStatus.EquipItem(item);
+        playerStatusText.text = PlayerStatus.DisplayStatus();
+        //List Equipped items
+        equippedText.text = PlayerStatus.ShowEquippedItem();
+    }
+    private void UnequipItem(Item item)
+    {
+        PlayerStatus.UnequipItem(item);
+        playerStatusText.text = PlayerStatus.DisplayStatus();
+        //List Equipped items
+        equippedText.text = PlayerStatus.ShowEquippedItem();
     }
 }

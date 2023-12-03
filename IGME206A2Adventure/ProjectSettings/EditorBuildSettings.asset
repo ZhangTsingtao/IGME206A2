@@ -6,9 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/IGME/206/Tsingtao/Scenes/StartScene.unity
-    guid: 96ce6e916019cff4f880e0112382d5b5
-  - enabled: 1
     path: Assets/IGME/206/Tsingtao/Scenes/Level1.unity
     guid: b9f6100dfef32044689297ba774f233d
+  - enabled: 1
+    path: Assets/IGME/206/Tsingtao/Scenes/Level2.unity
+    guid: 30dfda2e4d256b24e84c40e2c202a6ea
   m_configObjects: {}

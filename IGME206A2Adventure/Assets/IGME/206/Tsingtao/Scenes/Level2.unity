@@ -1343,7 +1343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95979bb6787dfbe47a2aa4ceeb1b7fa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialog: {fileID: 11400000, guid: 02c067ce98836dc42ab7fcdb9e04c837, type: 2}
+  dialog: {fileID: 11400000, guid: 596521a716d44304dbfb2fdcfdf44149, type: 2}
   dialogEntry: 0
 --- !u!1 &519420028
 GameObject:
@@ -1789,7 +1789,7 @@ MonoBehaviour:
   hp: 5
   attackValue: 2
   defenseValue: 1
-  item: {fileID: 11400000, guid: 12d0cbce424d3344092b64ae32dd7a80, type: 2}
+  item: {fileID: 11400000, guid: 9cb08f7f733fdd04bbd7277edab6e11c, type: 2}
   Alive: 1
 --- !u!224 &806585335
 RectTransform:

@@ -10,8 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 147bc443930a8294588f95451d616210, type: 3}
-  m_Name: ItemRustyShield
+  m_Name: ItemWoodenShield
   m_EditorClassIdentifier: 
-  itemName: Rusty Shield
-  attackValue: 0
+  itemName: Wooden Shield
+  attackValue: 1
   defenseValue: 1
+  healValue: 0
+  itemType: 0

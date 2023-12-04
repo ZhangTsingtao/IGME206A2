@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class WinTheGame : MonoBehaviour
 {
+    public UIController controller;
     private void OnDisable()
     {
-        Debug.Log("You won!!!");
-
+        controller.ShowWINUI();
     }
 }

@@ -10,19 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a2993859818fd01499cd6b79a33d8c1c, type: 3}
-  m_Name: Dialog2
+  m_Name: Dialog3
   m_EditorClassIdentifier: 
   names:
   - Player
-  - Forgotten Holy Knight
+  - Scary Mushroom
   rawDialogs:
-  - What? You still can get up?
-  - Oof... I was not paying attention, now let's fight for real!
-  - Hahaha, take a break, old man, you can't beat me
-  - No more talk, Let's fight
+  - Why is a plant blocking my way
+  - To be precise, I'm fungus
+  - Whatever you are, you're gonna chopped
+  - I'm scary!!!!
   dialogs:
-  - "Player: \r\nWhat? You still can get up?"
-  - "Forgotten Holy Knight: \r\nOof... I was not paying attention, now let's fight
-    for real!"
-  - "Player: \r\nHahaha, take a break, old man, you can't beat me"
+  - "Player: \r\nAgain?"
+  - "Forgotten Holy Knight: \r\nCan't believe you made it here"
+  - "Player: \r\nWho do you think you are, no one remembers you"
   - "Forgotten Holy Knight: \r\nNo more talk, Let's fight"

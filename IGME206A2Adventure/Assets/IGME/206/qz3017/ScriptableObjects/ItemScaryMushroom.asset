@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 147bc443930a8294588f95451d616210, type: 3}
-  m_Name: ItemRustyHolyArmor
+  m_Name: ItemScaryMushroom
   m_EditorClassIdentifier: 
-  itemName: Rusty Holy Sword
-  attackValue: 1
-  defenseValue: 1
+  itemName: Scary Mushroom
+  attackValue: 2
+  defenseValue: 0
   healValue: 1
-  itemType: 1
+  itemType: 2

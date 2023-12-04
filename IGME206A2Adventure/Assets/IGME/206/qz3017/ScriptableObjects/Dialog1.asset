@@ -18,13 +18,17 @@ MonoBehaviour:
   rawDialogs:
   - Who are you?
   - I'm just a plain knight, I'm here to make sure you never step our ot here.
-  - Puff... Just you?
-  - What, you want a piece of cake?
-  - Impress me.
-  - You asked for that!
+  - What? Why
+  - We have taken princess peach, and you have been sentenced death beacause of protecting
+    her
+  - Oh, no! I must save princess peach!
+  - You will not get through me!
   dialogs:
-  - 'Player: 1'
-  - 'Plain Knight: 2'
-  - 'Player: 3'
-  - 'Plain Knight: 4'
-  - 'Player: 6'
+  - "Player: \r\nWho are you?"
+  - "Plain Knight: \r\nI'm just a plain knight, I'm here to make sure you never step
+    our ot here."
+  - "Player: \r\nWhat? Why"
+  - "Plain Knight: \r\nWe have taken princess peach, and you have been sentenced
+    death beacause of protecting her"
+  - "Player: \r\nOh, no! I must save princess peach!"
+  - "Plain Knight: \r\nYou will not get through me!"

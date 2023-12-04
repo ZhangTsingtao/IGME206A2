@@ -22,6 +22,8 @@ public class UIController : MonoBehaviour
     [Header("Assign")]
     public GameObject gameOverUI;
 
+    public GameObject winUI;
+
     [Header("No Assign")]
     [SerializeField] private Item lootItem;
     private DialogDisplay dialogDisplay;
@@ -175,7 +177,8 @@ public class UIController : MonoBehaviour
             nextButton.gameObject.SetActive(true);
             lootItem = enemy.item;
             enemy.Die();
-
+            PlayerStatus.TakeDamage(0);
+            playerStatusText.text = PlayerStatus.DisplayStatus();
             ShiftToNextStage();
             return;
         }
@@ -283,5 +286,15 @@ public class UIController : MonoBehaviour
         playerStatusText.text = PlayerStatus.DisplayStatus();
         //List Equipped items
         equippedText.text = PlayerStatus.ShowEquippedItem();
+    }
+
+    public void ShowWINUI()
+    {
+        if (winUI == null) Debug.Log("No winning Ui found");
+        Invoke("SetWinUIActive", 1f);
+    }
+    private void SetWinUIActive()
+    {
+        winUI.SetActive(true);
     }
 }

@@ -39,6 +39,7 @@ public static class PlayerStatus
 
         PlayerHealth -= (attackValue - PlayerDefenseValue);
         PlayerHealth += PlayerHealValue;
+        if (PlayerHealth > PlayerMaxHealth) PlayerHealth = PlayerMaxHealth;
         if (PlayerHealth > 0)
         {
             return (true, "Player is damaged by " + (attackValue - PlayerDefenseValue).ToString() + " points \n Player recovers " + PlayerHealValue + " points \n");
@@ -133,7 +134,7 @@ public static class PlayerStatus
         for (int i = 0; i < PlayerItems.Count; i++)
         {
             inventoryList += i+1 + ". " + PlayerItems[i].itemName + "\n" + 
-                             "Attack Bonus: " + PlayerItems[i].attackValue + "    Defense Bonus: " + PlayerItems[i].defenseValue + "\n\n";
+                             "Type: " + PlayerItems[i].itemType + "   Attack: " + PlayerItems[i].attackValue + "    Defense: " + PlayerItems[i].defenseValue + "    Heal: " + PlayerItems[i].healValue + "\n\n";
 
         }
 

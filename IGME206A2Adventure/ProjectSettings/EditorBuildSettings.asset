@@ -6,9 +6,21 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/IGME/206/Tsingtao/Scenes/Level1.unity
+    path: Assets/IGME/206/qz3017/Scenes/Level1.unity
     guid: b9f6100dfef32044689297ba774f233d
   - enabled: 1
-    path: Assets/IGME/206/Tsingtao/Scenes/Level2.unity
+    path: Assets/IGME/206/qz3017/Scenes/Level2.unity
     guid: 30dfda2e4d256b24e84c40e2c202a6ea
+  - enabled: 1
+    path: Assets/IGME/206/qz3017/Scenes/Level3.unity
+    guid: 038eae102afeeb849a52db737e31654a
+  - enabled: 1
+    path: Assets/IGME/206/qz3017/Scenes/Level4.unity
+    guid: 9b8f00801d1138b4ea3c85bf4b962b1e
+  - enabled: 1
+    path: Assets/IGME/206/qz3017/Scenes/Level5.unity
+    guid: e9078633facbaa2448691bf84feea7fe
+  - enabled: 1
+    path: Assets/IGME/206/qz3017/Scenes/Level6.unity
+    guid: eb7bc77772fce5f46a5af3dc7275fb77
   m_configObjects: {}

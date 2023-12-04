@@ -713,7 +713,7 @@ Transform:
   m_GameObject: {fileID: 167373416}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -959.9142, y: -540.0622, z: 0}
-  m_LocalScale: {x: 6.2973, y: 6.2973, z: 6.2973}
+  m_LocalScale: {x: 0.9660058, y: 0.9660058, z: 0.9660058}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 408556636}
@@ -760,7 +760,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 56a8a6d0d3f0a2f498a44a85b2faaf54, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f41d01eceb8ce1c4dad94cfdc22ddb1c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1344,7 +1344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95979bb6787dfbe47a2aa4ceeb1b7fa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialog: {fileID: 11400000, guid: 596521a716d44304dbfb2fdcfdf44149, type: 2}
+  dialog: {fileID: 11400000, guid: 717f4f2154eee9a44bfcce85dd95b6bf, type: 2}
   dialogEntry: 0
 --- !u!1 &519420028
 GameObject:
@@ -1717,7 +1717,7 @@ GameObject:
   - component: {fileID: 806585333}
   - component: {fileID: 806585334}
   m_Layer: 0
-  m_Name: Knight
+  m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1764,7 +1764,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 4
-  m_Sprite: {fileID: 21300000, guid: 6616ff8ae0aca834a8ef2e5e3277bdf1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8fd18e8e4c352694d9dc0c1fb1a33ddd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1787,10 +1787,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cb68f8b3a3fd9b458f35114ad15188a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 5
-  attackValue: 3
-  defenseValue: 2
-  item: {fileID: 11400000, guid: 9cb08f7f733fdd04bbd7277edab6e11c, type: 2}
+  hp: 10
+  attackValue: 8
+  defenseValue: 4
+  item: {fileID: 11400000, guid: 0afb24f80cd74d44591af9bb4a57a15d, type: 2}
   Alive: 1
 --- !u!224 &806585335
 RectTransform:
@@ -1801,8 +1801,8 @@ RectTransform:
   m_GameObject: {fileID: 806585330}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3557, y: 0.3557, z: 0.3557}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 8.17, y: 8.17, z: 8.17}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5

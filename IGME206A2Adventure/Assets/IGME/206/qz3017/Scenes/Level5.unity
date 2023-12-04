@@ -1788,7 +1788,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 10
-  attackValue: 8
+  attackValue: 6
   defenseValue: 4
   item: {fileID: 11400000, guid: 0afb24f80cd74d44591af9bb4a57a15d, type: 2}
   Alive: 1
@@ -2035,7 +2035,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -480.7263, w: 0}
+  m_margin: {x: 0, y: 0, z: -699.95593, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
